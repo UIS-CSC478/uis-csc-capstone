@@ -20,6 +20,13 @@
 .metadata/
 .recommenders/
 
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
 # OS / system junk
 .DS_Store
 Thumbs.db
