@@ -343,9 +343,9 @@ Do **not** work directly on the `main` branch.
 
 
 
-## Creating a Branch
+## Creating a Feature Branch
 
-
+NOTE: to keep track of releases all feature branches must be built from the **development** branch. Oncce a stable version is reached we can merge development to Main.
 
 ### Using GitHub Desktop
 
@@ -449,7 +449,7 @@ git push -u origin feature/short-description
 
 - Click **Merge pull request**
 
-- Delete the branch after merging
+- Keep **Development** branch after merging
 
 
 
