@@ -17,6 +17,8 @@
 /.classpath
 /.project
 /.settings/
+.metadata/
+.recommenders/
 
 # OS / system junk
 .DS_Store
