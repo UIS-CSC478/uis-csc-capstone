@@ -1,20 +1,20 @@
-\# UIS CSC478 Capstone – Group Project (Spring 2026)
+# UIS CSC478 Capstone – Group Project (Spring 2026)
 
 
 
 This repository contains the CSC478 Group Capstone project. 
 
-The application is a \*\*Maven-based Java project\*\*. Maven handles building the app and downloading any dependencies automatically. Recommended IDE is \*\*Eclipse\*\*.
+The application is a **Maven-based Java project**. Maven handles building the app and downloading any dependencies automatically. Recommended IDE is **Eclipse**.
 
 
 
 This README explains:
 
-\- How to set up the project locally
+- How to set up the project locally
 
-\- How to build and run the application
+- How to build and run the application
 
-\- How the team can use GitHub (branches, pull requests, merging)
+- How the team can use GitHub (branches, pull requests, merging)
 
 
 
@@ -22,7 +22,7 @@ This README explains:
 
 
 
-\## Requirements
+## Requirements
 
 
 
@@ -30,15 +30,15 @@ Before starting, make sure you have the following installed:
 
 
 
-\- \*\*Git\*\* (GitHub Desktop recommended)
+- **Git** (GitHub Desktop recommended)
 
-\- \*\*Java JDK 17\*\* (Temurin / OpenJDK recommended)
+- **Java JDK 17** (Temurin / OpenJDK recommended)
 
-\- \*\*Eclipse IDE for Java Developers\*\*
+- **Eclipse IDE for Java Developers**
 
 
 
-\### Verify Java Is Installed
+### Verify Java Is Installed
 
 
 
@@ -54,7 +54,7 @@ java -version
 
 
 
-You should see version \*\*17.x\*\*.
+You should see version **17.x**.
 
 
 
@@ -62,27 +62,27 @@ You should see version \*\*17.x\*\*.
 
 
 
-\## 1) Clone the Repository
+## 1) Clone the Repository
 
 
 
-\### Using GitHub Desktop
+### Using GitHub Desktop
 
 
 
-\- Open GitHub Desktop
+- Open GitHub Desktop
 
-\- Click \*\*File → Clone repository\*\*
+- Click **File → Clone repository**
 
-\- Select the repository
+- Select the repository
 
-\- Choose a local folder
+- Choose a local folder
 
-\- Click \*\*Clone\*\*
+- Click **Clone**
 
 
 
-\### Using Command Line
+### Using Command Line
 
 
 
@@ -96,11 +96,11 @@ git clone <repo-url>
 
 After cloning, the folder should contain:
 
-\- `pom.xml`
+- `pom.xml`
 
-\- `src/`
+- `src/`
 
-\- `README.md`
+- `README.md`
 
 
 
@@ -108,23 +108,23 @@ After cloning, the folder should contain:
 
 
 
-\## 2) Import the Project into Eclipse
+## 2) Import the Project into Eclipse
 
 
 
-\- Open \*\*Eclipse\*\*
+- Open **Eclipse**
 
-\- Click \*\*File → Import\*\*
+- Click **File → Import**
 
-\- Select \*\*Maven → Existing Maven Projects\*\*
+- Select **Maven → Existing Maven Projects**
 
-\- Click \*\*Next\*\*
+- Click **Next**
 
-\- Browse to the repository folder (where `pom.xml` is located)
+- Browse to the repository folder (where `pom.xml` is located)
 
-\- Ensure the project is checked
+- Ensure the project is checked
 
-\- Click \*\*Finish\*\*
+- Click **Finish**
 
 
 
@@ -136,25 +136,25 @@ Allow Maven to download dependencies if prompted.
 
 
 
-\## 3) Pull Latest Changes
+## 3) Pull Latest Changes
 
 
 
-Do this \*\*before starting work\*\*.
+Do this **before starting work**.
 
 
 
-\### Using GitHub Desktop
+### Using GitHub Desktop
 
 
 
-\- Click \*\*Fetch origin\*\*
+- Click **Fetch origin**
 
-\- Click \*\*Pull origin\*\*
+- Click **Pull origin**
 
 
 
-\### Using Command Line
+### Using Command Line
 
 
 
@@ -170,7 +170,7 @@ git pull
 
 
 
-\## 4) Update Maven Project in Eclipse
+## 4) Update Maven Project in Eclipse
 
 
 
@@ -178,11 +178,11 @@ After pulling changes:
 
 
 
-\- Right-click the project
+- Right-click the project
 
-\- Click \*\*Maven → Update Project…\*\*
+- Click **Maven → Update Project…**
 
-\- Click \*\*OK\*\*
+- Click **OK**
 
 
 
@@ -194,31 +194,31 @@ This keeps Eclipse synchronized with Maven.
 
 
 
-\## 5) Build the Project
+## 5) Build the Project
 
 
 
-\### From Eclipse
+### From Eclipse
 
 
 
-\- Right-click the project
+- Right-click the project
 
-\- Click \*\*Run As → Maven build…\*\*
+- Click **Run As → Maven build…**
 
-\- Enter into \*\*Goals\*\*:
+- Enter into **Goals**:
 
-&nbsp; ```
+```
 
-&nbsp; clean package
+clean package
 
-&nbsp; ```
+```
 
-\- Click \*\*Run\*\*
+- Click **Run**
 
 
 
-\### From Command Line (repo root)
+### From Command Line (repo root)
 
 
 
@@ -238,21 +238,21 @@ The build output is created in the `target/` folder.
 
 
 
-\## 6) Run the Application
+## 6) Run the Application
 
 
 
-\### From Eclipse
+### From Eclipse
 
 
 
-\- Open `Main.java`
+- Open `Main.java`
 
-\- Right-click → \*\*Run As → Java Application\*\*
+- Right-click → **Run As → Java Application**
 
 
 
-\### From Command Line
+### From Command Line
 
 
 
@@ -268,67 +268,31 @@ java -jar target/scrabble-app-0.0.1-SNAPSHOT.jar
 
 
 
-\## 7) Common Issues
+## 7) Common Issues
 
 
 
-\### Java Is Not Recognized
+### Java Is Not Recognized
 
 
 
-\- Install \*\*JDK 17\*\*
+- Install **JDK 17**
 
-\- Ensure Java is added to \*\*PATH\*\*
+- Ensure Java is added to **PATH**
 
-\- Restart Command Prompt
-
-
-
-\### Eclipse Shows Errors After Pulling
+- Restart Command Prompt
 
 
 
-\- \*\*Maven → Update Project\*\*
-
-\- \*\*Project → Clean…\*\*
-
-\- Rebuild the project
+### Eclipse Shows Errors After Pulling
 
 
 
----
+- **Maven → Update Project**
 
+- **Project → Clean…**
 
-
-\## 8) Files to Commit
-
-
-
-\### Commit These Files
-
-
-
-\- `src/\*\*`
-
-\- `pom.xml`
-
-\- `.gitignore`
-
-\- `README.md`
-
-
-
-\### Do NOT Commit
-
-
-
-\- `target/`
-
-\- `.project`
-
-\- `.classpath`
-
-\- `.settings/`
+- Rebuild the project
 
 
 
@@ -336,11 +300,35 @@ java -jar target/scrabble-app-0.0.1-SNAPSHOT.jar
 
 
 
-\# Git Workflow (Branching, Pull Requests, and Merging)
+## 8) Files to Commit
 
 
 
-Do \*\*not\*\* work directly on the `main` branch.
+### Commit These Files
+
+
+
+- `src/**`
+
+- `pom.xml`
+
+- `.gitignore`
+
+- `README.md`
+
+
+
+### Do NOT Commit
+
+
+
+- `target/`
+
+- `.project`
+
+- `.classpath`
+
+- `.settings/`
 
 
 
@@ -348,31 +336,43 @@ Do \*\*not\*\* work directly on the `main` branch.
 
 
 
-\## Creating a Branch
+# Git Workflow (Branching, Pull Requests, and Merging)
 
 
 
-\### Using GitHub Desktop
+Do **not** work directly on the `main` branch.
 
 
 
-\- Click \*\*Current Branch\*\*
-
-\- Click \*\*New Branch\*\*
-
-\- Name the branch:
-
-&nbsp; ```
-
-&nbsp; feature/short-description
-
-&nbsp; ```
-
-\- Click \*\*Create Branch\*\*
+---
 
 
 
-\### Using Command Line
+## Creating a Branch
+
+
+
+### Using GitHub Desktop
+
+
+
+- Click **Current Branch**
+
+- Click **New Branch**
+
+- Name the branch:
+
+```
+
+feature/short-description
+
+```
+
+- Click **Create Branch**
+
+
+
+### Using Command Line
 
 
 
@@ -388,55 +388,35 @@ git checkout -b feature/short-description
 
 
 
-\## Making Changes and Committing
+## Making Changes and Committing
 
 
 
-\- Make code changes
+- Make code changes
 
-\- Commit with a clear summary, for example:
+- Commit with a clear summary, for example:
 
-&nbsp; ```
+```
 
-&nbsp; Add scoring logic
+Add scoring logic
 
-&nbsp; ```
-
-
-
-\### Push the Branch
+```
 
 
 
-\- GitHub Desktop → \*\*Push origin\*\*
-
-\- or:
-
-&nbsp; ```bat
-
-&nbsp; git push -u origin feature/short-description
-
-&nbsp; ```
+### Push the Branch
 
 
 
----
+- GitHub Desktop → **Push origin**
 
+- or:
 
+```bat
 
-\## Opening a Pull Request
+git push -u origin feature/short-description
 
-
-
-\- Go to the repository on GitHub
-
-\- Click \*\*Compare \& pull request\*\*
-
-\- Set base branch to `main`
-
-\- Add a short description
-
-\- Click \*\*Create pull request\*\*
+```
 
 
 
@@ -444,17 +424,19 @@ git checkout -b feature/short-description
 
 
 
-\## Merging to Main
+## Opening a Pull Request
 
 
 
-\- Another teammate reviews the pull request
+- Go to the repository on GitHub
 
-\- Resolve any feedback
+- Click **Compare & pull request**
 
-\- Click \*\*Merge pull request\*\*
+- Set base branch to `main`
 
-\- Delete the branch after merging
+- Add a short description
+
+- Click **Create pull request**
 
 
 
@@ -462,7 +444,25 @@ git checkout -b feature/short-description
 
 
 
-\## After Merging
+## Merging to Main
+
+
+
+- Another teammate reviews the pull request
+
+- Resolve any feedback
+
+- Click **Merge pull request**
+
+- Delete the branch after merging
+
+
+
+---
+
+
+
+## After Merging
 
 
 
@@ -484,7 +484,7 @@ Then in Eclipse:
 
 
 
-\- Right-click project → \*\*Maven → Update Project\*\*
+- Right-click project → **Maven → Update Project**
 
 
 
@@ -492,17 +492,17 @@ Then in Eclipse:
 
 
 
-\## Team Best Practices
+## Team Best Practices
 
 
 
-\- One feature per branch
+- One feature per branch
 
-\- Small commits
+- Small commits
 
-\- Pull before starting work
+- Pull before starting work
 
-\- Never commit directly to `main`
+- Never commit directly to `main`
 
 
 
