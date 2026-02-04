@@ -34,7 +34,7 @@ Before starting, make sure you have the following installed:
 
 - **Java JDK 17** (Temurin / OpenJDK recommended)
 
-- **Eclipse IDE for Java Developers**
+- **Eclipse IDE for Java Developers** (recommended)
 
 
 
