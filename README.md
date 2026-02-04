@@ -16,6 +16,7 @@ This README explains:
 
 - How the team can use GitHub (branches, pull requests, merging)
 
+Note: The GUI uses JavaFX. The recommended run command for all platforms is `mvn javafx:run`.
 
 
 ---
@@ -34,7 +35,7 @@ Before starting, make sure you have the following installed:
 
 - **Java JDK 17** (Temurin / OpenJDK recommended)
 
-- **Eclipse IDE for Java Developers**
+- **Eclipse IDE for Java Developers** (recommended)
 
 
 
@@ -230,43 +231,37 @@ mvn clean package
 
 
 
-The build output is created in the `target/` folder.
+The build output is created in the `target/` folder (example: `scrabble-app-0.0.1-SNAPSHOT.jar`).
 
 
 
 ---
 
+## 6) Run the Application (JavaFX GUI)
 
-
-## 6) Run the Application
-
-
-
-### From Eclipse
-
-
+### From Eclipse (recommended)
 
 - Open `Main.java`
-
 - Right-click → **Run As → Java Application**
 
+### From Command Line (repo root)
 
-
-### From Command Line
-
-
+Build first (creates the jar):
 
 ```bat
-
-java -jar target/scrabble-app-0.0.1-SNAPSHOT.jar
-
+mvn clean package
 ```
+Run the jar:
+```
+java -jar target/scrabble-app-0.0.1-SNAPSHOT.jar
+```
+Run using Maven (best cross-platform option)
 
-
-
+This is the most consistent option for Windows/macOS/Linux:
+```
+mvn javafx:run
+```
 ---
-
-
 
 ## 7) Common Issues
 
