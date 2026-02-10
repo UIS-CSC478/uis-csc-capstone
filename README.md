@@ -57,6 +57,7 @@ java -version
 
 You should see version **17.x**.
 
+NOTE: When installing please include Set JAVA_HOME variable - this allows Maven to function correctly without needing the full installation path hardcoded into the configurations or startup script.
 
 
 ---
