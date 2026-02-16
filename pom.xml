@@ -17,25 +17,37 @@
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
         <javafx.version>21.0.5</javafx.version>
+        <os.detected.classifier>${os.detected.classifier}</os.detected.classifier>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
+             <groupId>org.openjfx</groupId>
+             <artifactId>javafx-controls</artifactId>
+             <version>${javafx.version}</version>
+             <classifier>${os.detected.classifier}</classifier>
         </dependency>
 
         <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
+             <groupId>org.openjfx</groupId>
+             <artifactId>javafx-fxml</artifactId>
+             <version>${javafx.version}</version>
+             <classifier>${os.detected.classifier}</classifier>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
 
+
+            <!-- OS Detection Plugin -->
+            <plugin>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.7.1</version>
+                <extensions>true</extensions>
+            </plugin>
+                 
             <!-- Fat JAR plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -58,6 +70,7 @@
                     </execution>
                 </executions>
             </plugin>
+                 
 
             <!-- JavaFX run plugin -->
             <plugin>
