@@ -14,11 +14,10 @@
         A Java-based Scrabble game developed by CSC478 Group 2.
     </description>
 
-    <properties>
-        <maven.compiler.release>17</maven.compiler.release>
-        <javafx.version>21.0.5</javafx.version>
-        <os.detected.classifier>${os.detected.classifier}</os.detected.classifier>
-    </properties>
+<properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <javafx.version>21.0.5</javafx.version>
+</properties>
 
     <dependencies>
         <dependency>
@@ -37,16 +36,16 @@
     </dependencies>
 
     <build>
+         <!-- OS Detection  -->
+         <extensions>
+                  <extension>
+                           <groupId>kr.motd.maven</groupId>
+                           <artifactId>os-maven-plugin</artifactId>
+                           <version>1.7.1</version>
+                  </extension>
+         </extensions>
+
         <plugins>
-
-
-            <!-- OS Detection Plugin -->
-            <plugin>
-                <groupId>kr.motd.maven</groupId>
-                <artifactId>os-maven-plugin</artifactId>
-                <version>1.7.1</version>
-                <extensions>true</extensions>
-            </plugin>
                  
             <!-- Fat JAR plugin -->
             <plugin>
