@@ -14,28 +14,41 @@
         A Java-based Scrabble game developed by CSC478 Group 2.
     </description>
 
-    <properties>
-        <maven.compiler.release>17</maven.compiler.release>
-        <javafx.version>21.0.5</javafx.version>
-    </properties>
+<properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <javafx.version>21.0.5</javafx.version>
+</properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
+             <groupId>org.openjfx</groupId>
+             <artifactId>javafx-controls</artifactId>
+             <version>${javafx.version}</version>
+             <!-- WS 021626 commented out os classifiers due Maven not defining the property. JavaFX + Maven should automatically handle cross-platform -->
+            <!-- <classifier>${os.detected.classifier}</classifier> -->
         </dependency>
 
         <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
+             <groupId>org.openjfx</groupId>
+             <artifactId>javafx-fxml</artifactId>
+             <version>${javafx.version}</version>
+             <!-- WS 021626 commented out os classifiers due Maven not defining the property. JavaFX + Maven should automatically handle cross-platform -->
+            <!-- <classifier>${os.detected.classifier}</classifier> -->
         </dependency>
     </dependencies>
 
     <build>
-        <plugins>
+         <!-- OS Detection  -->
+         <extensions>
+                  <extension>
+                           <groupId>kr.motd.maven</groupId>
+                           <artifactId>os-maven-plugin</artifactId>
+                           <version>1.7.1</version>
+                  </extension>
+         </extensions>
 
+        <plugins>
+                 
             <!-- Fat JAR plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -58,6 +71,7 @@
                     </execution>
                 </executions>
             </plugin>
+                 
 
             <!-- JavaFX run plugin -->
             <plugin>
