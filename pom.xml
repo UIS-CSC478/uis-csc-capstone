@@ -24,14 +24,16 @@
              <groupId>org.openjfx</groupId>
              <artifactId>javafx-controls</artifactId>
              <version>${javafx.version}</version>
-             <classifier>${os.detected.classifier}</classifier>
+             <!-- WS 021626 commented out os classifiers due Maven not defining the property. JavaFX + Maven should automatically handle cross-platform -->
+            <!-- <classifier>${os.detected.classifier}</classifier> -->
         </dependency>
 
         <dependency>
              <groupId>org.openjfx</groupId>
              <artifactId>javafx-fxml</artifactId>
              <version>${javafx.version}</version>
-             <classifier>${os.detected.classifier}</classifier>
+             <!-- WS 021626 commented out os classifiers due Maven not defining the property. JavaFX + Maven should automatically handle cross-platform -->
+            <!-- <classifier>${os.detected.classifier}</classifier> -->
         </dependency>
     </dependencies>
 
