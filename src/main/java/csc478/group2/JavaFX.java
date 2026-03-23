@@ -17,5 +17,7 @@ public class JavaFX extends Application {
         stage.setTitle("CSC478 Scrabble App");
         stage.setScene(scene);
         stage.show();
+        
+        
     }
 }
