@@ -1,39 +1,14 @@
 package csc478.group2;
 
 //TO BE RE-WRITTEN MISSSING CRUCIAL FUNCTIONALITY AI HELP - ONLY BUILT TO HELP WITH UI DEVELOPMENT
+//Updated 4/4
+
 import java.util.Comparator;
 import java.util.List;
 
 public class TurnAnalyzer {
 
-    public boolean isStraightLine(List<PlacedTile> placedTiles) {
-        if (placedTiles == null || placedTiles.isEmpty()) {
-            return false;
-        }
-
-        if (placedTiles.size() == 1) {
-            return true;
-        }
-
-        boolean sameRow = true;
-        boolean sameCol = true;
-
-        int firstRow = placedTiles.get(0).getRow();
-        int firstCol = placedTiles.get(0).getCol();
-
-        for (PlacedTile placedTile : placedTiles) {
-            if (placedTile.getRow() != firstRow) {
-                sameRow = false;
-            }
-
-            if (placedTile.getCol() != firstCol) {
-                sameCol = false;
-            }
-        }
-
-        return sameRow || sameCol;
-    }
-
+    
     public String buildWordFromBoard(Board board, List<PlacedTile> placedTiles) {
         if (placedTiles == null || placedTiles.isEmpty()) {
             return "";
@@ -119,4 +94,7 @@ public class TurnAnalyzer {
 
         return score;
     }
+    
+   
+    
 }

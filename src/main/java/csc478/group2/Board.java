@@ -34,6 +34,18 @@ public class Board {
     public void clearPosition(int row, int col) {
         grid[row][col] = emptyCell;
     }
+    
+    public boolean isEmpty() {
+    	for(int row = 0; row < boardSize; row++) {
+    		for(int col = 0; col < boardSize; col++) {
+    			if(grid[row][col] != emptyCell) {
+    				return false;
+    			}
+    		}
+    	}
+    	
+    	return true;
+    }
 
     
 }

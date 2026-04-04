@@ -10,6 +10,7 @@ public class GameController {
     private Rack rack;
     private List<PlacedTile> tilesPlacedThisTurn;
     private WordValidation wordValidator;
+    private RulesEngine rulesEngine;
     
     //CALLS CLASS WHICH NEEDS TO BE RE-WRITTEN HERE FOR UI TESTING PURPOSES
     private TurnAnalyzer turnAnalyzer;
@@ -25,6 +26,7 @@ public class GameController {
         
       //CALLS CLASS WHICH NEEDS TO BE RE-WRITTEN HERE FOR UI TESTING PURPOSES
         turnAnalyzer = new TurnAnalyzer();
+        rulesEngine = new RulesEngine();
     }
 
     public GameController() {
@@ -107,7 +109,7 @@ public class GameController {
     }
     //check if the tiles placed are in a straight line  up or down
     //if not then return blank
-    if (!turnAnalyzer.isStraightLine(tilesPlacedThisTurn)) {
+    if (!rulesEngine.isStraightLine(tilesPlacedThisTurn)) {
         return "";
     }
     //build the word
@@ -123,11 +125,17 @@ public class GameController {
 	
 	    Board board = gameState.getBoard();
 	
-	    if (!turnAnalyzer.isStraightLine(tilesPlacedThisTurn)) {
+	    //not in use rn
+	   /* if (!rulesEngine.isStraightLine(tilesPlacedThisTurn)) {
 	        cancelTurn();
 	        return false;
-	    }
+	    } */
 	
+	    if(!rulesEngine.validateMove(board, tilesPlacedThisTurn, wordValidator)) {
+	    	cancelTurn();
+	    	return false;
+	    }
+	    
 	    String word = turnAnalyzer.buildWordFromBoard(board, tilesPlacedThisTurn);
 	
 	    if (word == null || word.isBlank()) {
@@ -152,7 +160,8 @@ public class GameController {
 	    rack.clearSelectedTile();
 	    refillRack();
 	
-	    return true;
+	    return true;    
+	    
 	} 
     
 }
