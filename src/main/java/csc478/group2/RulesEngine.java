@@ -36,7 +36,7 @@ public class RulesEngine {
         return sameRow || sameCol;
     }
 	
-	// Ensure there are no gaps
+
 	public boolean isContinuous(Board board, List<PlacedTile> tiles) {
 		
 		if(tiles.size() <= 1) {
@@ -76,9 +76,9 @@ public class RulesEngine {
 		return true;
 	}
 	
-	//The first move must touch the center at (7,7)
+	//Center at (7,7)
 	
-	public boolean isFirstCentered(Board board, List<PlacedTile> tiles) {
+	public boolean isCentered(Board board, List<PlacedTile> tiles) {
 		
 		if(!board.isEmpty()) {
 			return true;
@@ -93,7 +93,7 @@ public class RulesEngine {
 		return false;
 	}
 	
-	//Make sure that new tiles are connected to existing tiles
+	// New tiles connected to old tiles
 	
 	public boolean isConnected(Board board, List<PlacedTile> tiles) {
 		
@@ -158,7 +158,7 @@ public class RulesEngine {
 			return false;
 		}
 		
-		if(!isFirstCentered(board, tiles)) {
+		if(!isCentered(board, tiles)) {
 			return false;
 		}
 		
@@ -178,7 +178,7 @@ public class RulesEngine {
 		
 		System.out.println("Straight line: " + isStraightLine(tiles));
 		System.out.println("Continuous: " + isContinuous(board, tiles));
-		System.out.println("First centered: " + isFirstCentered(board, tiles));
+		System.out.println("First centered: " + isCentered(board, tiles));
 		System.out.println("Connected: " + isConnected(board, tiles));
 
 		System.out.println("Word: " + word);
