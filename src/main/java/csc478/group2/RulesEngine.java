@@ -45,7 +45,8 @@ public class RulesEngine {
 		
 		boolean sameRow = tiles.stream().allMatch(t -> t.getRow() == tiles.get(0).getRow());
 		
-		if(sameRow) {
+		if(sameRow = true) {
+			
 			tiles.sort(Comparator.comparingInt(PlacedTile::getCol));
 			int row = tiles.get(0).getRow();
 		
@@ -59,6 +60,7 @@ public class RulesEngine {
 				}
 			}
 		} else {
+			
 			tiles.sort(Comparator.comparingInt(PlacedTile::getRow));
 			int col = tiles.get(0).getCol(); 
 			
@@ -102,6 +104,7 @@ public class RulesEngine {
 		}
 		
 		for(PlacedTile pt : tiles) {
+			
 			int r = pt.getRow();
 			int c = pt.getCol();
 			
@@ -166,6 +169,8 @@ public class RulesEngine {
 			return false;
 		}
 		
+		
+		
 		String word = analyzer.buildWordFromBoard(board, tiles);
 		
 		if(!minWordLength(word)) {
@@ -175,6 +180,8 @@ public class RulesEngine {
 		if(!wordExists(word, validator)) {
 			return false;
 		}
+		
+		// output for the test rules engine class,,
 		
 		System.out.println("Straight line: " + isStraightLine(tiles));
 		System.out.println("Continuous: " + isContinuous(board, tiles));

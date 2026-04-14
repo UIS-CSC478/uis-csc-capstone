@@ -31,6 +31,7 @@ public class TestRulesEngine {
 
 	         boolean result = rules.validateMove(board, tiles, validator);
 
+	         System.out.println("");
 	         System.out.println("Valid move: " + result);
 	    }
 }
