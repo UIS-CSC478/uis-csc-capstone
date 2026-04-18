@@ -2,24 +2,24 @@ package csc478.group2;
 
 public class GameState {
 
-	private int currentScore;
-	private int remainingTime;
-	private int targetScore;
-	private Board board;
-	private GameStatus gameStatus;
-	
-	public enum GameStatus {
-	    RUNNING,
-	    WON,
-	    LOST
-	}
-	
-	public GameState() {
-		board = new Board();
-        currentScore = 0;
-        remainingTime = 300;
-        targetScore = 100;
-        gameStatus = GameStatus.RUNNING;
+    public enum GameStatus {
+        RUNNING,
+        WON,
+        LOST
+    }
+
+    private int currentScore;
+    private int remainingTime;
+    private int targetScore;
+    private final Board board;
+    private GameStatus gameStatus;
+
+    public GameState() {
+        this.board = new Board();
+        this.currentScore = 0;
+        this.remainingTime = 300;
+        this.targetScore = 100;
+        this.gameStatus = GameStatus.RUNNING;
     }
 
     public int getCurrentScore() {
@@ -42,20 +42,15 @@ public class GameState {
         return gameStatus;
     }
 
- 
-    void setCurrentScore(int score) {
-        this.currentScore = score;
+    void setCurrentScore(int currentScore) {
+        this.currentScore = currentScore;
     }
 
-    void setRemainingTime(int time) {
-        this.remainingTime = time;
+    void setRemainingTime(int remainingTime) {
+        this.remainingTime = remainingTime;
     }
 
-    void setBoard(Board board) {
-        this.board = board;
-    }
-
-    void setGameStatus(GameStatus status) {
-        this.gameStatus = status;
+    void setGameStatus(GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
     }
 }

@@ -5,154 +5,117 @@ import java.util.List;
 
 public class GameController {
 
-    private GameState gameState;
-    private TileBag tileBag;
-    private Rack rack;
-    private List<PlacedTile> tilesPlacedThisTurn;
-    private WordValidation wordValidator;
-    
-    //CALLS CLASS WHICH NEEDS TO BE RE-WRITTEN HERE FOR UI TESTING PURPOSES
-    private TurnAnalyzer turnAnalyzer;
+    private final GameState state;
 
-    
-    public void startNewGame() {
-        gameState = new GameState();
-        tileBag = new TileBag();
-        rack = new Rack();
-        tilesPlacedThisTurn = new ArrayList<>();
-        wordValidator = new WordValidation();
-        refillRack();
-        
-      //CALLS CLASS WHICH NEEDS TO BE RE-WRITTEN HERE FOR UI TESTING PURPOSES
-        turnAnalyzer = new TurnAnalyzer();
-    }
+    // ✔ moved here (NOT in GameState)
+    private final Rack rack;
+    private final TileBag tileBag;
+
+    private final RulesEngine rulesEngine;
+    private final ScoreCalculator scoreCalculator;
+    private final TimeManager timeManager;
+    private final EndConditionEvaluator endEvaluator;
+    private final WordValidation wordValidation;
 
     public GameController() {
-        startNewGame();
+        this.state = new GameState();
+
+        this.rack = new Rack();
+        this.tileBag = new TileBag();
+
+        this.rulesEngine = new RulesEngine();
+        this.scoreCalculator = new ScoreCalculator();
+        this.timeManager = new TimeManager();
+        this.endEvaluator = new EndConditionEvaluator();
+        this.wordValidation = new WordValidation();
+
+        rack.refill(tileBag); // initial rack
     }
 
     public GameState getGameState() {
-        return gameState;
+        return state;
     }
 
-    public List<Tile> getRack() {
-        return rack.getTiles();
-    }
-    
-    public void refillRack() {
-        rack.refill(tileBag);
+    // =========================
+    // RACK ACCESS (for UI)
+    // =========================
+
+    public List<Tile> getRackTiles() {
+        return new ArrayList<>(rack.getTiles());
     }
 
-    public boolean selectTile(int rackIndex) {
-        return rack.selectTile(rackIndex);
+    public void returnTilesToRack(List<PlacedTile> tiles) {
+        for (PlacedTile t : tiles) {
+            rack.addTile(t.getTile());
+        }
     }
 
-    public void clearSelectedTile() {
-        rack.clearSelectedTile();
-    }
+    // =========================
+    // TURN SUBMISSION
+    // =========================
 
-    public boolean placeSelectedTile(int row, int col) {
-    	//initializes board so it looks cleaner
-        Board board = gameState.getBoard();
-    	
-        //check if tile was selected at all
-    	if (!rack.hasSelectedTile()) {
+    public boolean submitTurn(List<PlacedTile> placedTiles) {
+
+        if (state.getGameStatus() != GameState.GameStatus.RUNNING) {
             return false;
         }
-    	
-        //make sure selection is not outside of the 15x15 board
-        if (!board.isValidPosition(row, col)) {
+
+        if (placedTiles == null || placedTiles.isEmpty()) {
             return false;
         }
-        
-        //make sure there isn't another tile in place
-        if (!board.isEmptyAt(row, col)) {
+
+        // validate BEFORE modifying state
+        if (!rulesEngine.validateMove(state, placedTiles, wordValidation)) {
             return false;
         }
-        
-       //initialize the selected tile to place
-        Tile tileToPlace = rack.getSelectedTile();
-        //put tile onto board
-        board.placeTile(row, col, tileToPlace);
-        //keep track of tiles played this turn
-        tilesPlacedThisTurn.add(new PlacedTile(row, col, tileToPlace));
-        //remove the tile from the  player once placed
-        rack.removeSelectedTile();
-        
+
+        applyPlacedTilesToBoard(placedTiles);
+
+        int score = scoreCalculator.calculateTurnScore(state, placedTiles);
+        state.setCurrentScore(state.getCurrentScore() + score);
+
+        applyTimeBonuses(placedTiles);
+
+        rack.refill(tileBag); // refill AFTER move
+
+        timeManager.tickAfterTurn(state);
+        state.setGameStatus(endEvaluator.evaluate(state));
+
         return true;
     }
 
-    public void cancelTurn() {
-    	//initializes board so it looks cleaner
-        Board board = gameState.getBoard();
+    // =========================
+    // INTERNAL HELPERS
+    // =========================
 
-        //loop through all tiles played this turn
-        for (PlacedTile placedTile : tilesPlacedThisTurn) {
-        	//remove tiles placed at the positions played this turn
-            board.clearPosition(placedTile.getRow(), placedTile.getCol());
-            //place back into players rack
-            rack.addTile(placedTile.getTile());
+    private void applyPlacedTilesToBoard(List<PlacedTile> placedTiles) {
+        Board board = state.getBoard();
+
+        for (PlacedTile placed : placedTiles) {
+            board.placeTile(placed.getRow(), placed.getCol(), placed.getTile());
+            rack.removeTile(placed.getTile()); // ✔ FIXED
         }
-        //clear the list of tiles played this turn
-        tilesPlacedThisTurn.clear();
-        //get rid of any selected tiles as well
-        rack.clearSelectedTile();
     }
-    
-    //below is partly AI written, will need to be written again in our own code
-  public String getWordForCurrentTurn() {
-	//check if anything was placed
-    if (tilesPlacedThisTurn.isEmpty()) {
-        return "";
-    }
-    //check if the tiles placed are in a straight line  up or down
-    //if not then return blank
-    if (!turnAnalyzer.isStraightLine(tilesPlacedThisTurn)) {
-        return "";
-    }
-    //build the word
-    return turnAnalyzer.buildWordFromBoard(gameState.getBoard(), tilesPlacedThisTurn);
-}
 
-  
-  	//CALLS CLASS WHICH NEEDS TO BE RE-WRITTEN HERE FOR UI TESTING PURPOSES
-	public boolean submitTurn() {
-	    if (tilesPlacedThisTurn.isEmpty()) {
-	        return false;
-	    }
-	
-	    Board board = gameState.getBoard();
-	
-	    if (!turnAnalyzer.isStraightLine(tilesPlacedThisTurn)) {
-	        cancelTurn();
-	        return false;
-	    }
-	
-	    String word = turnAnalyzer.buildWordFromBoard(board, tilesPlacedThisTurn);
-	
-	    if (word == null || word.isBlank()) {
-	        cancelTurn();
-	        return false;
-	    }
-	
-	    if (!wordValidator.isValidWord(word)) {
-	        cancelTurn();
-	        return false;
-	    }
-	
-	    int turnScore = turnAnalyzer.calculateTurnScore(tilesPlacedThisTurn);
-	    int newTotal = gameState.getCurrentScore() + turnScore;
-	    gameState.setCurrentScore(newTotal);
-	
-	    if (gameState.getCurrentScore() >= gameState.getTargetScore()) {
-	        gameState.setGameStatus(GameState.GameStatus.WON);
-	    }
-	
-	    tilesPlacedThisTurn.clear();
-	    rack.clearSelectedTile();
-	    refillRack();
-	
-	    return true;
-	} 
-    
+    private void applyTimeBonuses(List<PlacedTile> placedTiles) {
+        for (PlacedTile placed : placedTiles) {
+            Square square = state.getBoard().getSquare(placed.getRow(), placed.getCol());
+
+            if (!square.isBonusUsed() &&
+                square.getBonusType() == Square.BonusType.TIME) {
+
+                timeManager.applyTimeBonus(state, square.getBonusValue());
+                square.consumeBonus();
+            }
+        }
+    }
+
+    // =========================
+    // TIMER (UI CALLS THIS)
+    // =========================
+
+    public void tickClock() {
+        timeManager.decrement(state);
+        state.setGameStatus(endEvaluator.evaluate(state));
+    }
 }

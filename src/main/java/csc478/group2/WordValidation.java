@@ -1,28 +1,34 @@
 package csc478.group2;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 
 public class WordValidation {
 
-    private Set<String> validWords;
+    private final Set<String> validWords = new HashSet<>();
 
     public WordValidation() {
-        validWords = new HashSet<>();
         loadWords();
     }
-    
-    //Cost money or is copyrighted to use scrabble disctionary.. not gonna lie i assumed worcs were open source
-    //need to find word list that uses similar amount of words
+
     private void loadWords() {
-        validWords.add("CAT");
-        validWords.add("DOG");
-        validWords.add("READ");
-        validWords.add("WORD");
-        validWords.add("HELLO");
-        validWords.add("JAVA");
-        validWords.add("CODE");
-        validWords.add("GAME");
+        try (InputStream input = getClass().getResourceAsStream("/csc478/group2/sowpods.txt")) {
+            if (input == null) {
+                throw new IllegalStateException("Could not find sowpods.txt");
+            }
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    validWords.add(line.trim().toUpperCase());
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load SOWPODS", e);
+        }
     }
 
     public boolean isValidWord(String word) {
