@@ -1,66 +1,75 @@
 package csc478.group2;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Rack {
-    private List<Tile> tiles;
-    private Tile selectedTile;
+
+    private static final int MAX_TILES = 7;
+
+    private final List<Tile> tiles;
 
     public Rack() {
-        tiles = new ArrayList<>();
-        selectedTile = null;
+        this.tiles = new ArrayList<>();
     }
 
     public List<Tile> getTiles() {
         return tiles;
     }
 
-    public Tile getSelectedTile() {
-        return selectedTile;
+    public boolean isFull() {
+        return tiles.size() >= MAX_TILES;
     }
 
-    public boolean selectTile(int rackIndex) {
-        if (rackIndex < 0 || rackIndex >= tiles.size()) {
-            return false;
-        }
-
-        selectedTile = tiles.get(rackIndex);
-        return true;
+    public boolean isEmpty() {
+        return tiles.isEmpty();
     }
 
-    public void clearSelectedTile() {
-        selectedTile = null;
+    public int size() {
+        return tiles.size();
     }
 
     public void refill(TileBag tileBag) {
-        while (tiles.size() < 7 && !tileBag.isEmpty()) {
-        	Tile drawnTile = tileBag.drawTile();
-        	if (drawnTile != null) {
-        	    tiles.add(drawnTile);
-        	}
+        while (tiles.size() < MAX_TILES && !tileBag.isEmpty()) {
+            Tile drawn = tileBag.drawTile();
+            if (drawn != null) {
+                tiles.add(drawn);
+            }
         }
-    }
-
-    public boolean hasSelectedTile() {
-        return selectedTile != null;
-    }
-
-    public Tile removeSelectedTile() {
-        if (selectedTile == null) {
-            return null;
-        }
-
-        Tile tileToRemove = selectedTile;
-        tiles.remove(selectedTile);
-        selectedTile = null;
-        return tileToRemove;
     }
 
     public void addTile(Tile tile) {
-        if (tile != null) {
+        if (tile != null && tiles.size() < MAX_TILES) {
             tiles.add(tile);
         }
     }
 
+    public boolean removeTile(Tile tile) {
+        return tiles.remove(tile);
+    }
+
+    public Tile getTileAt(int index) {
+        if (index < 0 || index >= tiles.size()) {
+            return null;
+        }
+        return tiles.get(index);
+    }
+
+    public void clear() {
+        tiles.clear();
+    }
+
+    public List<Tile> snapshot() {
+        return new ArrayList<>(tiles);
+    }
+
+    public void restore(List<Tile> savedTiles) {
+        tiles.clear();
+        tiles.addAll(savedTiles);
+    }
+
+    public void sortAlphabetically() {
+        Collections.sort(tiles, (a, b) -> Character.compare(a.getLetter(), b.getLetter()));
+    }
 }

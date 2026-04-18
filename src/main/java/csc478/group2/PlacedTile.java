@@ -1,9 +1,9 @@
 package csc478.group2;
 
 public class PlacedTile {
-    private int row;
-    private int col;
-    private Tile tile;
+    private final int row;
+    private final int col;
+    private final Tile tile;
 
     public PlacedTile(int row, int col, Tile tile) {
         this.row = row;
