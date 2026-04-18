@@ -1,0 +1,106 @@
+3. Specific Requirements
+3.1 Core Game State Requirements
+
+3.1.0 The system shall maintain a single GameState object as the authoritative source of truth for all game data.
+3.1.1 The GameState shall contain currentScore.
+3.1.2 The GameState shall contain remainingTime.
+3.1.3 The GameState shall contain targetScore.
+3.1.4 The GameState shall contain boardState.
+3.1.5 The GameState shall contain gameStatus with possible values: RUNNING, WON, LOST.
+3.1.6 Only the RulesEngine and GameController shall modify GameState.
+3.1.7 Invalid placement attempts shall not modify GameState.
+
+3.2 Board and Square Requirements
+
+3.2.0 The system shall initialize a fixed-size 2D Board grid at game start.
+3.2.1 The Board shall contain Square objects.
+3.2.2 Each Square shall maintain row and column position.
+3.2.3 Each Square shall maintain an occupied flag.
+3.2.4 Each Square shall maintain a bonusType value (NONE, POINTS, TIME).
+3.2.5 Each Square shall maintain a bonusValue.
+3.2.6 A Square marked as occupied shall not accept additional tiles.
+3.2.7 Bonus squares shall apply their effect only once when first used.
+3.2.8 After a bonus is applied, the square shall revert to a non-bonus state.
+
+3.3 Tile Requirements
+
+3.3.0 Each Tile shall contain a character.
+3.3.1 Each Tile shall contain a pointValue or derive scoring from word length logic.
+3.3.2 Tiles shall only be placed onto unoccupied Squares.
+3.3.3 Tile placement shall occur only through validated PlacementRequest processing.
+
+3.4 Word Placement and Validation Requirements
+
+3.4.0 All moves shall be submitted through a PlacementRequest.
+3.4.1 A PlacementRequest shall include a word string.
+3.4.2 A PlacementRequest shall include a starting position.
+3.4.3 A PlacementRequest shall include a direction (horizontal or vertical).
+
+3.4.4 The RulesEngine shall validate that the placement fits within board boundaries (validatePlacementFitsBoard).
+3.4.5 The RulesEngine shall validate minimum word length (validateMinimumWordLength).
+3.4.6 The RulesEngine shall validate square availability (validateSquareAvailability).
+3.4.7 If validation fails, the move shall be rejected with no state mutation.
+3.4.8 If validation succeeds, the GameController shall proceed with scoring and state update.
+
+3.5 Scoring Requirements
+
+3.5.0 All scoring shall be handled by ScoreCalculator.
+3.5.1 The ScoreCalculator shall compute base score using calculateBaseScore(wordLength).
+3.5.2 The ScoreCalculator shall apply square bonuses using applyBonusPoints(squareBonus).
+3.5.3 The ScoreCalculator shall return the totalScore for the move.
+3.5.4 Scoring logic shall be deterministic.
+3.5.5 Scoring logic shall not depend on the UI layer.
+3.5.6 The GameController shall add the returned totalScore to GameState.currentScore.
+
+3.6 Time System Requirements
+
+3.6.0 The system shall initialize the TimeManager with initialTimeLimit.
+3.6.1 The TimeManager shall decrement time continuously during RUNNING state.
+3.6.2 Time bonuses shall only originate from Squares with bonusType = TIME.
+3.6.3 The TimeManager shall apply time bonuses using applyTimeBonus.
+3.6.4 The TimeManager shall evaluate expiration using checkTimeExpired.
+3.6.5 If time expires, the EndConditionEvaluator shall trigger loss state.
+
+3.7 End Condition Requirements
+
+3.7.0 EndConditionEvaluator shall check win condition using checkWinCondition(score, targetScore).
+3.7.1 A win shall occur when currentScore >= targetScore.
+3.7.2 EndConditionEvaluator shall check lose condition using checkLoseCondition(timeRemaining).
+3.7.3 A loss shall occur when remainingTime <= 0.
+3.7.4 Upon win, GameState.gameStatus shall be set to WON.
+3.7.5 Upon loss, GameState.gameStatus shall be set to LOST.
+3.7.6 No additional moves shall be accepted when gameStatus is not RUNNING.
+
+3.8 Game Flow Control Requirements
+
+3.8.0 All placement input shall be processed by GameController.
+3.8.1 GameController shall call RulesEngine for validation.
+3.8.2 Upon successful validation, GameController shall update GameState.
+3.8.3 GameController shall trigger ScoreCalculator for scoring.
+3.8.4 GameController shall trigger TimeManager updates as needed.
+3.8.5 After each move, GameController shall invoke EndConditionEvaluator.
+
+3.9 UI Layer Requirements
+
+3.9.0 GameUI shall render the Board using renderBoard(boardState).
+3.9.1 GameUI shall display currentScore using displayScore.
+3.9.2 GameUI shall display remainingTime using displayTime.
+3.9.3 GameUI shall display gameStatus using displayGameStatus.
+3.9.4 GameUI shall collect word input via collectWordInput.
+3.9.5 GameUI shall collect placement input via collectPlacementInput.
+3.9.6 The UI layer shall not directly modify GameState.
+
+3.10 Persistence Requirements
+
+3.10.0 SaveManager shall serialize GameState to a local file.
+3.10.1 SaveManager shall deserialize GameState from a local file.
+3.10.2 Save/load operations shall not modify core game logic.
+3.10.3 Loading a saved game shall restore Board state, score, time, and gameStatus.
+
+3.11 Testing Surface Requirements
+
+3.11.0 RulesEngine shall be testable independently of UI.
+3.11.1 ScoreCalculator shall be testable independently.
+3.11.2 TimeManager shall be testable independently.
+3.11.3 EndConditionEvaluator shall be testable independently.
+3.11.4 All validation failures shall produce deterministic results for test reproducibility.
