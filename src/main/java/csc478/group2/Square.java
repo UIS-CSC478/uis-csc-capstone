@@ -1,83 +1,81 @@
 package csc478.group2;
 
+// Class Description: The Square class represents a single position on the board, storing its location, whether it is occupied, the tile placed on it, and any bonus type or value that may affect scoring.
+
 public class Square {
 
-    public enum BonusType {
-        NONE,
-        DOUBLE_LETTER,
-        TRIPLE_LETTER,
-        DOUBLE_WORD,
-        TRIPLE_WORD,
-        TIME
-    }
+	public enum BonusType {
+		NONE, DOUBLE_LETTER, TRIPLE_LETTER, DOUBLE_WORD, TRIPLE_WORD, TIME
+	}
 
-    private final int row;
-    private final int col;
-    private boolean occupied;
-    private Tile tile;
-    private BonusType bonusType;
-    private int bonusValue;
-    private boolean bonusUsed;
+	private final int row;
+	private final int col;
+	private boolean occupied;
+	private Tile tile;
+	private BonusType bonusType;
+	private int bonusValue;
+	private boolean bonusUsed;
 
-    public Square(int row, int col, BonusType bonusType, int bonusValue) {
-        this.row = row;
-        this.col = col;
-        this.bonusType = bonusType;
-        this.bonusValue = bonusValue;
-        this.occupied = false;
-        this.tile = null;
-        this.bonusUsed = false;
-    }
+	public Square(int row, int col, BonusType bonusType, int bonusValue) {
+		this.row = row;
+		this.col = col;
+		this.bonusType = bonusType;
+		this.bonusValue = bonusValue;
+		this.occupied = false;
+		this.tile = null;
+		this.bonusUsed = false;
+	}
 
-    public int getRow() {
-        return row;
-    }
+	public int getRow() {
+		return row;
+	}
 
-    public int getCol() {
-        return col;
-    }
+	public int getCol() {
+		return col;
+	}
 
-    public boolean isOccupied() {
-        return occupied;
-    }
+	public boolean isOccupied() {
+		return occupied;
+	}
 
-    public Tile getTile() {
-        return tile;
-    }
+	public Tile getTile() {
+		return tile;
+	}
 
-    public boolean placeTile(Tile t) {
-        if (occupied) return false;
-        tile = t;
-        occupied = true;
-        return true;
-    }
+	public boolean placeTile(Tile t) {
+		if (occupied)
+			return false;
+		tile = t;
+		occupied = true;
+		return true;
+	}
 
-    public Tile removeTile() {
-        Tile old = tile;
-        tile = null;
-        occupied = false;
-        return old;
-    }
+	public Tile removeTile() {
+		Tile old = tile;
+		tile = null;
+		occupied = false;
+		return old;
+	}
 
-    public char getLetter() {
-        return tile == null ? Board.EMPTY_CELL : tile.getLetter();
-    }
+	public char getLetter() {
+		return tile == null ? Board.EMPTY_CELL : tile.getLetter();
+	}
 
-    public BonusType getBonusType() {
-        return bonusType;
-    }
+	public BonusType getBonusType() {
+		return bonusType;
+	}
 
-    public int getBonusValue() {
-        return bonusValue;
-    }
+	public int getBonusValue() {
+		return bonusValue;
+	}
 
-    public boolean isBonusUsed() {
-        return bonusUsed;
-    }
+	public boolean isBonusUsed() {
+		return bonusUsed;
+	}
 
-    public void consumeBonus() {
-        bonusUsed = true;
-        bonusType = BonusType.NONE;
-        bonusValue = 0;
-    }
+	public void consumeBonus() {
+		bonusUsed = true;
+		bonusType = BonusType.NONE;
+		bonusValue = 0;
+	}
 }

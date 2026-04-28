@@ -1,121 +1,90 @@
 package csc478.group2;
 
+// 1.3.8 Game Flow Control Requirements
+// Class Description: The GameController class manages the overall game by coordinating the game state, rack, tile bag, rules validation, scoring, time updates, and win/loss evaluation. It processes submitted turns, along with most game actions. 
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameController {
 
-    private final GameState state;
+	private final GameState state;
+	private final Rack rack;
+	private final TileBag tileBag;
+	private final RulesEngine rulesEngine;
+	private final ScoreCalculator scoreCalculator;
+	private final TimeManager timeManager;
+	private final EndConditionEvaluator endEvaluator;
+	private final WordValidation wordValidation;
 
-    // ✔ moved here (NOT in GameState)
-    private final Rack rack;
-    private final TileBag tileBag;
+	public GameController() {
+		this.state = new GameState();
+		this.rack = new Rack();
+		this.tileBag = new TileBag();
+		this.rulesEngine = new RulesEngine();
+		this.scoreCalculator = new ScoreCalculator();
+		this.timeManager = new TimeManager();
+		this.endEvaluator = new EndConditionEvaluator();
+		this.wordValidation = new WordValidation();
 
-    private final RulesEngine rulesEngine;
-    private final ScoreCalculator scoreCalculator;
-    private final TimeManager timeManager;
-    private final EndConditionEvaluator endEvaluator;
-    private final WordValidation wordValidation;
+		rack.refill(tileBag);
+	}
 
-    public GameController() {
-        this.state = new GameState();
+	public GameState getGameState() {
+		return state;
+	}
 
-        this.rack = new Rack();
-        this.tileBag = new TileBag();
+	public List<Tile> getRackTiles() {
+		return new ArrayList<>(rack.getTiles());
+	}
 
-        this.rulesEngine = new RulesEngine();
-        this.scoreCalculator = new ScoreCalculator();
-        this.timeManager = new TimeManager();
-        this.endEvaluator = new EndConditionEvaluator();
-        this.wordValidation = new WordValidation();
+	public void returnTilesToRack(List<PlacedTile> tiles) {
+		for (PlacedTile t : tiles) {
+			rack.addTile(t.getTile());
+		}
+	}
 
-        rack.refill(tileBag); // initial rack
-    }
+	public boolean submitTurn(List<PlacedTile> placedTiles) {
 
-    public GameState getGameState() {
-        return state;
-    }
+		if (state.getGameStatus() != GameState.GameStatus.RUNNING) {
+			return false;
+		}
 
-    // =========================
-    // RACK ACCESS (for UI)
-    // =========================
+		if (placedTiles == null || placedTiles.isEmpty()) {
+			return false;
+		}
+		// 1.3.8.1 GameController shall call RulesEngine for validation.
+		if (!rulesEngine.validateMove(state, placedTiles, wordValidation)) {
+			return false;
+		}
+		// 1.3.8.2 Upon successful validation, GameController shall update GameState.
+		applyPlacedTilesToBoard(placedTiles);
 
-    public List<Tile> getRackTiles() {
-        return new ArrayList<>(rack.getTiles());
-    }
+		// 1.3.8.3 GameController shall trigger ScoreCalculator for scoring.
+		int score = scoreCalculator.calculateTurnScore(state, placedTiles);
+		state.setCurrentScore(state.getCurrentScore() + score);
 
-    public void returnTilesToRack(List<PlacedTile> tiles) {
-        for (PlacedTile t : tiles) {
-            rack.addTile(t.getTile());
-        }
-    }
+		rack.refill(tileBag);
+		// 1.3.8.4 GameController shall trigger TimeManager updates as needed.
+		// 1.3.8.5 After each move, GameController shall invoke EndConditionEvaluator.
+		timeManager.tickAfterTurn(state);
+		state.setGameStatus(endEvaluator.evaluate(state));
 
-    // =========================
-    // TURN SUBMISSION
-    // =========================
+		return true;
+	}
 
-    public boolean submitTurn(List<PlacedTile> placedTiles) {
+	// 1.3.8.0 All placement input shall be processed by GameController.
+	private void applyPlacedTilesToBoard(List<PlacedTile> placedTiles) {
+		Board board = state.getBoard();
 
-        if (state.getGameStatus() != GameState.GameStatus.RUNNING) {
-            return false;
-        }
+		for (PlacedTile placed : placedTiles) {
+			board.placeTile(placed.getRow(), placed.getCol(), placed.getTile());
+			rack.removeTile(placed.getTile());
+		}
+	}
 
-        if (placedTiles == null || placedTiles.isEmpty()) {
-            return false;
-        }
-
-        // validate BEFORE modifying state
-        if (!rulesEngine.validateMove(state, placedTiles, wordValidation)) {
-            return false;
-        }
-
-        applyPlacedTilesToBoard(placedTiles);
-
-        int score = scoreCalculator.calculateTurnScore(state, placedTiles);
-        state.setCurrentScore(state.getCurrentScore() + score);
-
-        applyTimeBonuses(placedTiles);
-
-        rack.refill(tileBag); // refill AFTER move
-
-        timeManager.tickAfterTurn(state);
-        state.setGameStatus(endEvaluator.evaluate(state));
-
-        return true;
-    }
-
-    // =========================
-    // INTERNAL HELPERS
-    // =========================
-
-    private void applyPlacedTilesToBoard(List<PlacedTile> placedTiles) {
-        Board board = state.getBoard();
-
-        for (PlacedTile placed : placedTiles) {
-            board.placeTile(placed.getRow(), placed.getCol(), placed.getTile());
-            rack.removeTile(placed.getTile()); // ✔ FIXED
-        }
-    }
-
-    private void applyTimeBonuses(List<PlacedTile> placedTiles) {
-        for (PlacedTile placed : placedTiles) {
-            Square square = state.getBoard().getSquare(placed.getRow(), placed.getCol());
-
-            if (!square.isBonusUsed() &&
-                square.getBonusType() == Square.BonusType.TIME) {
-
-                timeManager.applyTimeBonus(state, square.getBonusValue());
-                square.consumeBonus();
-            }
-        }
-    }
-
-    // =========================
-    // TIMER (UI CALLS THIS)
-    // =========================
-
-    public void tickClock() {
-        timeManager.decrement(state);
-        state.setGameStatus(endEvaluator.evaluate(state));
-    }
+	public void tickClock() {
+		timeManager.decrement(state);
+		state.setGameStatus(endEvaluator.evaluate(state));
+	}
 }
